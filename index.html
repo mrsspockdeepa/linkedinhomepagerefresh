@@ -3,448 +3,746 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkedIn — Broadsheet prototype</title>
+<title>LinkedIn Home — UI Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
- 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
-
-  body { font-family: 'IBM Plex Sans', sans-serif; }
-/* ═══════════════════════════════════════════════════════════════════
-     PROTOTYPE A — "BROADSHEET"
-     Light editorial. LinkedIn palette. Dense. Serif headlines.
-     ═══════════════════════════════════════════════════════════════════ */
-  .sa {
-    background: #ffffff;
-    color: rgba(0,0,0,0.9);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-  }
-  .sa .grid {
-    display: grid;
-    grid-template-columns: 56px 1fr 360px;
-    grid-template-rows: 52px 1fr;
-    height: 100vh;
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f4f2ee;
+    --border: #e0dfdc;
+    --ink: #000000;
+    --ink-2: #333333;
+    --muted: #666666;
+    --muted-2: #8a8a8a;
+    --blue: #0a66c2;
+    --blue-tint: #eaf4fc;
+    --green: #057642;
+    --green-tint: #e8f5ed;
+    --red: #cb112d;
   }
 
-  /* top bar */
-  .sa .top {
-    grid-column: 1 / -1;
-    display: flex; align-items: center;
-    border-bottom: 1px solid #e0dfdc;
-    padding: 0 20px 0 0;
-    background: #f4f2ee;
-  }
-  .sa .brand {
-    width: 56px; display: flex; align-items: center; justify-content: center;
-    font: 700 22px/1 'Fraunces', serif; color: #0a66c2;
-    border-right: 1px solid #e0dfdc; height: 100%;
-  }
-  .sa .cmdk {
-    flex: 1; display: flex; align-items: center; gap: 10px;
-    padding: 0 20px; height: 100%;
-    border-right: 1px solid #e0dfdc;
-  }
-  .sa .cmdk svg { opacity: 0.5; color: #666; }
-  .sa .cmdk input {
-    flex: 1; background: transparent; border: none; outline: none;
-    color: rgba(0,0,0,0.9); font: 400 13px 'IBM Plex Sans', sans-serif;
-  }
-  .sa .cmdk input::placeholder { color: #8a8a8a; }
-  .sa .kbd {
-    font: 500 10px 'IBM Plex Mono', monospace; color: #666;
-    padding: 3px 7px; border: 1px solid #e0dfdc; border-radius: 4px;
-    background: #ffffff;
-  }
-  .sa .top-meta {
-    display: flex; gap: 24px; padding: 0 24px; align-items: center;
-    font: 500 11px 'IBM Plex Mono', monospace; color: #666;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    border-right: 1px solid #e0dfdc; height: 100%;
-  }
-  .sa .top-meta .dot { color: #0a66c2; }
-  .sa .top-actions {
-    display: flex; gap: 18px; align-items: center; padding-left: 24px;
-  }
-  .sa .top-actions .ico {
-    width: 32px; height: 32px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: #5e5e5e; cursor: pointer; position: relative;
-  }
-  .sa .top-actions .ico:hover { background: #ebe9e4; color: #000; }
-  .sa .top-actions .ico .badge {
-    position: absolute; top: 2px; right: 2px;
-    width: 7px; height: 7px; border-radius: 50%; background: #cb112d;
-    box-shadow: 0 0 0 2px #f4f2ee;
-  }
-  .sa .avatar-sm {
-    width: 32px; height: 32px; border-radius: 6px;
-    background: #ffffff; border: 1px solid #e0dfdc;
-    display: flex; align-items: center; justify-content: center;
-    font: 600 11px 'IBM Plex Sans'; color: #000;
-    letter-spacing: 0.02em;
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink-2);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* left rail */
-  .sa .rail {
-    border-right: 1px solid #e0dfdc;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 16px 0; gap: 4px;
-    background: #f4f2ee;
-  }
-  .sa .rail button {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: transparent; border: none; cursor: pointer;
-    color: #666; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .sa .rail button:hover { background: #ebe9e4; color: #000; }
-  .sa .rail button.on {
-    background: #eaf4fc; color: #0a66c2;
-    box-shadow: inset 2px 0 0 #0a66c2;
-  }
-  .sa .rail .spacer { flex: 1; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+  .wrap-narrow { max-width: 760px; margin: 0 auto; padding: 0 40px; }
 
-  /* feed */
-  .sa .feed {
-    overflow-y: auto;
-    padding: 0;
-    border-right: 1px solid #e0dfdc;
-    background: #ffffff;
+  /* ========== MASTHEAD ========== */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
   }
-  .sa .feed-head {
-    padding: 28px 40px 20px;
-    border-bottom: 1px solid #e0dfdc;
-    display: flex; justify-content: space-between; align-items: flex-end;
+  .masthead-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    max-width: 1120px; margin: 0 auto;
   }
-  .sa .feed-head h1 {
-    font: 500 38px/1 'Fraunces', serif;
-    letter-spacing: -0.02em; color: #000;
+  .logo {
+    font: 700 22px 'Roboto', sans-serif;
+    color: var(--blue);
+    letter-spacing: -0.01em;
   }
-  .sa .feed-head h1 em {
-    font-style: normal; color: #0a66c2; font-weight: 500;
-  }
-  .sa .feed-head .date {
-    font: 500 11px 'IBM Plex Mono', monospace;
-    color: #666; text-transform: uppercase; letter-spacing: 0.1em;
-  }
-  .sa .filters {
-    display: flex; gap: 2px; padding: 14px 40px;
-    border-bottom: 1px solid #e0dfdc;
-    font: 500 11px 'IBM Plex Mono', monospace;
+  .masthead nav {
+    display: flex; gap: 28px;
+    font: 500 12px 'IBM Plex Mono', monospace;
     text-transform: uppercase; letter-spacing: 0.08em;
   }
-  .sa .filters button {
-    background: transparent; border: none; color: #666;
-    padding: 6px 12px; cursor: pointer; border-radius: 4px;
+  .masthead nav a {
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
   }
-  .sa .filters button.on { background: #0a66c2; color: #ffffff; }
-  .sa .filters button:not(.on):hover { color: #000; background: #f4f2ee; }
+  .masthead nav a:hover { color: var(--ink); }
 
-  .sa .composer {
-    padding: 18px 40px; border-bottom: 1px solid #e0dfdc;
-    display: flex; gap: 14px; align-items: center;
+  /* ========== HERO ========== */
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
   }
-  .sa .composer input {
-    flex: 1; background: transparent; border: none; outline: none;
-    font: 400 14px/1 'IBM Plex Sans', sans-serif; color: #666;
-  }
-  .sa .composer .tools { display: flex; gap: 6px; }
-  .sa .composer .tools button {
-    background: transparent; border: 1px solid #e0dfdc;
-    color: #5e5e5e; padding: 6px 12px; border-radius: 6px;
+  .hero .eyebrow {
     font: 500 11px 'IBM Plex Mono', monospace;
-    text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
-  }
-  .sa .composer .tools button:hover { border-color: #0a66c2; color: #0a66c2; background: #eaf4fc; }
-
-  .sa .post {
-    padding: 22px 40px; border-bottom: 1px solid #e0dfdc;
-    display: grid; grid-template-columns: 1fr auto; gap: 14px;
-    cursor: pointer; transition: background 0.2s;
-  }
-  .sa .post:hover { background: #f4f2ee; }
-  .sa .post .body .meta {
-    display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px;
-    font-size: 12px;
-  }
-  .sa .post .body .name { font-weight: 600; color: #000; }
-  .sa .post .body .role { color: #666; }
-  .sa .post .body .time {
-    font: 500 10px 'IBM Plex Mono', monospace; color: #8a8a8a;
-    margin-left: auto; padding-left: 10px;
-  }
-  .sa .post .body h2 {
-    font: 500 18px/1.25 'Fraunces', serif;
-    letter-spacing: -0.01em; margin: 4px 0 6px; color: #000;
-  }
-  .sa .post .body p {
-    font-size: 13px; line-height: 1.55; color: #333;
-    max-width: 62ch;
-  }
-  .sa .post .body p a { color: #0a66c2; text-decoration: none; font-weight: 500; }
-  .sa .post .react {
-    display: flex; flex-direction: column; align-items: flex-end;
-    gap: 8px; font: 500 11px 'IBM Plex Mono', monospace; color: #666;
-  }
-  .sa .post .react .count {
-    display: flex; align-items: center; gap: 4px;
-  }
-  .sa .post .react .count svg { opacity: 0.6; }
-  .sa .post .body .chip {
-    display: inline-block; font: 500 10px 'IBM Plex Mono', monospace;
-    color: #0a66c2; text-transform: uppercase; letter-spacing: 0.1em;
-    padding: 3px 8px; border: 1px solid #0a66c244; border-radius: 3px;
-    margin-right: 6px; background: #eaf4fc;
-  }
-  .sa .post .body .chip.alt {
-    color: #057642; border-color: #05764244; background: #e8f5ed;
-  }
-
-  /* right side */
-  .sa .side {
-    overflow-y: auto;
-    padding: 28px 24px;
-    background: #f4f2ee;
-  }
-  .sa .side .you {
-    padding-bottom: 20px; border-bottom: 1px solid #e0dfdc;
+    color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.12em;
     margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
   }
-  .sa .side .you .row1 {
+  .hero .eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--blue);
+  }
+  .hero h1 {
+    font: 500 64px/1.02 'Roboto', sans-serif;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    max-width: 20ch;
+  }
+  .hero h1 .accent { color: var(--blue); }
+  .hero .deck {
+    font-size: 19px; line-height: 1.55;
+    color: var(--muted);
+    max-width: 62ch;
+    margin-bottom: 36px;
+  }
+  .hero .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+  }
+  .hero .meta-grid .m .l {
+    font: 500 10px 'IBM Plex Mono', monospace;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .hero .meta-grid .m .v {
+    font: 500 15px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: var(--ink);
+  }
+
+  /* ========== SECTION ========== */
+  section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font: 500 11px 'IBM Plex Mono', monospace;
+    color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label .num {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--blue-tint);
+    border: 1px solid rgba(10,102,194,0.2);
+    border-radius: 3px;
+  }
+
+  h2 {
+    font: 500 42px/1.1 'Roboto', sans-serif;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    max-width: 24ch;
+  }
+  h3 {
+    font: 500 24px/1.25 'Roboto', sans-serif;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  section p {
+    font-size: 17px; line-height: 1.65;
+    color: var(--muted);
+    max-width: 62ch;
+    margin-bottom: 18px;
+  }
+  section p strong { color: var(--ink-2); font-weight: 600; }
+  section p .key { color: var(--blue); font-weight: 500; }
+
+  /* ========== PROBLEM LIST ========== */
+  .problem-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .problem-list .p {
+    background: var(--bg);
+    padding: 28px 30px;
+  }
+  .problem-list .p .n {
+    font: 500 11px 'IBM Plex Mono', monospace;
+    color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .problem-list .p h4 {
+    font: 600 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .problem-list .p .desc {
+    font-size: 14px; color: var(--muted); line-height: 1.55;
+  }
+
+  /* ========== GOALS ========== */
+  .goals {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .goals .g {
+    padding: 28px 24px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .goals .g .icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .goals .g h4 {
+    font: 500 17px 'Roboto', sans-serif;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .goals .g p {
+    font-size: 13px; line-height: 1.55;
+    color: var(--muted);
+    max-width: none; margin: 0;
+  }
+
+  /* ========== BEFORE / AFTER ========== */
+  .compare {
+    margin-top: 40px;
+  }
+  .compare .label-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
     margin-bottom: 14px;
   }
-  .sa .side .you .row1 h3 {
-    font: 500 17px 'Fraunces', serif; letter-spacing: -0.01em; color: #000;
+  .compare .lbl {
+    font: 500 11px 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 10px;
   }
-  .sa .side .you .row1 .sub { font-size: 11px; color: #666; margin-top: 2px; }
-  .sa .side .stats { display: flex; gap: 10px; }
-  .sa .side .stats .stat {
-    flex: 1; padding: 10px 12px;
-    border: 1px solid #e0dfdc; border-radius: 6px;
-    background: #ffffff;
+  .compare .lbl .tag {
+    padding: 2px 8px; border-radius: 3px;
+    font-weight: 500;
   }
-  .sa .side .stats .stat .n {
-    font: 500 20px/1 'Fraunces', serif; color: #0a66c2;
+  .compare .lbl.before .tag { background: #fde8ec; color: var(--red); border: 1px solid #f5c6ce; }
+  .compare .lbl.after .tag { background: var(--green-tint); color: var(--green); border: 1px solid #b8ddc3; }
+  .compare .frames {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
-  .sa .side .stats .stat .l {
-    font: 500 9px 'IBM Plex Mono', monospace;
-    color: #666; text-transform: uppercase; letter-spacing: 0.08em;
-    margin-top: 4px;
+  .compare .frame {
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    position: relative;
   }
-  .sa .side h4 {
+  .compare .frame svg {
+    width: 100%; height: 100%;
+    display: block;
+  }
+  .compare .frame img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+  }
+  .compare .caption-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 14px;
+  }
+  .compare .cap {
+    font-size: 13px; line-height: 1.55;
+    color: var(--muted);
+  }
+  .compare .launch {
+    text-align: center; margin-top: 32px;
+  }
+  .compare .launch a {
+    display: inline-block;
+    padding: 14px 28px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    font: 500 12px 'IBM Plex Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .compare .launch a:hover { background: #084d92; }
+  .compare .launch .hint {
+    display: block;
+    font: 500 11px 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    margin-top: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* ========== DECISIONS ========== */
+  .decisions {
+    margin-top: 40px;
+  }
+  .decisions .d {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .decisions .d:last-child { border-bottom: none; }
+  .decisions .d .n {
+    font: 500 13px 'IBM Plex Mono', monospace;
+    color: var(--blue);
+    padding-top: 4px;
+  }
+  .decisions .d .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .decisions .d .before-after .col {
+    padding: 14px 16px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+  .decisions .d .before-after .col.b { border-left: 3px solid #e8b4bc; }
+  .decisions .d .before-after .col.a { border-left: 3px solid var(--green); }
+  .decisions .d .before-after .t {
     font: 500 10px 'IBM Plex Mono', monospace;
-    color: #666; text-transform: uppercase; letter-spacing: 0.12em;
-    margin-bottom: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 4px;
   }
-  .sa .side .news { margin-bottom: 24px; }
-  .sa .side .news .item {
-    padding: 10px 0; border-bottom: 1px solid #e0dfdc;
-    display: grid; grid-template-columns: 20px 1fr; gap: 10px;
-    cursor: pointer;
-  }
-  .sa .side .news .item:hover .headline { color: #0a66c2; }
-  .sa .side .news .item:last-child { border-bottom: none; }
-  .sa .side .news .num {
-    font: 500 11px 'IBM Plex Mono', monospace; color: #8a8a8a;
-  }
-  .sa .side .news .headline {
-    font: 500 13px/1.35 'Fraunces', serif; color: #000;
-    transition: color 0.2s; margin-bottom: 3px;
-  }
-  .sa .side .news .readers {
-    font: 500 9px 'IBM Plex Mono', monospace; color: #8a8a8a;
-    text-transform: uppercase; letter-spacing: 0.06em;
-  }
-  .sa .side .jobs .j {
-    padding: 10px 0; border-bottom: 1px solid #e0dfdc;
-    display: flex; align-items: center; gap: 10px; cursor: pointer;
-  }
-  .sa .side .jobs .j:last-child { border-bottom: none; }
-  .sa .side .jobs .logo {
-    width: 28px; height: 28px; border-radius: 5px;
-    background: #ffffff; border: 1px solid #e0dfdc;
-    display: flex; align-items: center; justify-content: center;
-    font: 700 11px 'Fraunces', serif; color: #0a66c2; flex-shrink: 0;
-  }
-  .sa .side .jobs .j .t { font-size: 12px; color: #000; font-weight: 500; }
-  .sa .side .jobs .j .c { font-size: 10px; color: #666; margin-top: 2px; }
 
-  /* scrollbars */
-  .sa .feed::-webkit-scrollbar,
-  .sa .side::-webkit-scrollbar { width: 6px; }
-  .sa .feed::-webkit-scrollbar-thumb,
-  .sa .side::-webkit-scrollbar-thumb { background: #c8c8c8; border-radius: 3px; }
+  /* ========== PERSONAS ========== */
+  .personas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .personas .pa {
+    padding: 36px 32px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .personas .pa.hm { border-top: 3px solid var(--blue); }
+  .personas .pa.cd { border-top: 3px solid var(--green); }
+  .personas .pa .role {
+    font: 500 11px 'IBM Plex Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .personas .pa.hm .role { color: var(--blue); }
+  .personas .pa.cd .role { color: var(--green); }
+  .personas .pa h3 {
+    font: 500 26px 'Roboto', sans-serif;
+    margin-bottom: 14px;
+  }
+  .personas .pa .desc {
+    font-size: 14px; line-height: 1.6; color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .personas .pa ul {
+    list-style: none;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+  }
+  .personas .pa ul li {
+    padding: 8px 0 8px 20px;
+    font-size: 14px;
+    color: var(--ink-2);
+    position: relative;
+    line-height: 1.5;
+  }
+  .personas .pa ul li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--blue);
+    font-weight: 500;
+  }
+  .personas .pa.cd ul li::before { color: var(--green); }
 
-  
+  /* ========== METRICS (near bottom) ========== */
+  .metrics {
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .metrics .section-label { color: var(--muted); }
+  .metrics .section-label .num {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--muted);
+  }
+  .metrics h2 { max-width: 22ch; }
+  .metrics .disclaimer {
+    font-size: 13px; color: var(--muted);
+    font-style: italic;
+    margin-bottom: 40px;
+    max-width: 62ch;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .metrics-grid .m {
+    padding: 32px 28px;
+    border-right: 1px solid var(--border);
+  }
+  .metrics-grid .m:last-child { border-right: none; }
+  .metrics-grid .m .label {
+    font: 500 10px 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+  .metrics-grid .m .big {
+    font: 500 48px/1 'Roboto', sans-serif;
+    color: var(--blue);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .metrics-grid .m .big .unit {
+    font-size: 24px; color: var(--muted); margin-left: 2px;
+  }
+  .metrics-grid .m .cap {
+    font-size: 12px; color: var(--muted); line-height: 1.5;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    padding: 60px 0 48px;
+    background: var(--bg);
+  }
+  footer .row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 32px; border-top: 1px solid var(--border);
+  }
+  footer .copy {
+    font: 500 11px 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  footer .links {
+    display: flex; gap: 24px;
+    font: 500 11px 'IBM Plex Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  footer .links a {
+    color: var(--muted); text-decoration: none;
+  }
+  footer .links a:hover { color: var(--blue); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+    .wrap, .wrap-narrow { padding: 0 24px; }
+    .masthead-inner { padding: 16px 24px; }
+    .hero { padding: 48px 0 40px; }
+    .hero h1 { font-size: 42px; }
+    .hero .deck { font-size: 16px; }
+    .hero .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    section { padding: 48px 0; }
+    h2 { font-size: 32px; }
+    .problem-list { grid-template-columns: 1fr; }
+    .goals { grid-template-columns: repeat(2, 1fr); }
+    .compare .frames, .compare .label-row, .compare .caption-row { grid-template-columns: 1fr; }
+    .decisions .d { grid-template-columns: 1fr; gap: 16px; }
+    .decisions .d .before-after { grid-template-columns: 1fr; }
+    .personas { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .metrics-grid .m { border-right: none; border-bottom: 1px solid var(--border); }
+    .metrics-grid .m:nth-child(even) { border-right: none; }
+    footer .row { flex-direction: column; gap: 16px; align-items: flex-start; }
+  }
 </style>
 </head>
 <body>
-<div class="sa">
-  <div class="grid">
-    <!-- TOP -->
-    <div class="top">
-      <div class="brand">in</div>
-      <div class="cmdk">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input placeholder="Search people, posts, companies, jobs…"/>
-        <span class="kbd">⌘K</span>
-      </div>
-      <div class="top-meta">
-        <div><span class="dot">●</span> FEED</div>
-        <div>NETWORK</div>
-        <div>JOBS</div>
-        <div>LEARNING</div>
-      </div>
-      <div class="top-actions">
-        <div class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="badge"></span></div>
-        <div class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="badge"></span></div>
-        <div class="avatar-sm">JD</div>
-      </div>
+
+<!-- ═════════ MASTHEAD ═════════ -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="logo">in · case study</div>
+    <nav>
+      <a href="#problem">Problem</a>
+      <a href="#goals">Goals</a>
+      <a href="#compare">Before / After</a>
+      <a href="#decisions">Decisions</a>
+      <a href="#metrics">Metrics</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═════════ HERO ═════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">UI / UX Case Study · 2026</div>
+    <h1>Reclaiming the <span class="accent">LinkedIn home page</span> for the people who use it every day.</h1>
+    <p class="deck">LinkedIn's web home page has drifted into a cluttered, low-density layout that wastes roughly 40% of its horizontal real estate on empty gutters while burying the content users actually come for. Broadsheet is a redesign proposal that treats the feed like an editorial product — dense, legible, and respectful of both the hiring managers scanning for talent and the candidates tracking their professional world.</p>
+    <div class="meta-grid">
+      <div class="m"><div class="l">Role</div><div class="v">Product · UX Design</div></div>
+      <div class="m"><div class="l">Scope</div><div class="v">Home feed redesign</div></div>
+      <div class="m"><div class="l">Platform</div><div class="v">Web (desktop)</div></div>
+      <div class="m"><div class="l">Status</div><div class="v">Concept · April 2026</div></div>
     </div>
+  </div>
+</section>
 
-    <!-- LEFT RAIL -->
-    <div class="rail">
-      <button class="on" title="Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
-      <button title="Network"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="3"/></svg></button>
-      <button title="Jobs"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></button>
-      <button title="Messages"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
-      <button title="Saved"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
-      <div class="spacer"></div>
-      <button title="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+<!-- ═════════ PROBLEM ═════════ -->
+<section id="problem">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">01</span> The Problem</div>
+    <h2>A home page that feels like a hallway, not a room.</h2>
+    <p>The current LinkedIn web home page has inherited layers of layout decisions from a decade of product growth. The result is a three-column grid dominated by margins, a feed that shows <strong>one and a half posts above the fold</strong>, a profile card that consumes an entire column for information the user already knows, and a news rail with oversized typography that looks like an aggregator rather than a quick scan.</p>
+    <p>Users — both the hiring managers sourcing candidates and the professionals tracking their industry — consistently describe it as <span class="key">clunky, wasteful, and slow to scan</span>. The problem isn't content; it's layout.</p>
+  </div>
+  <div class="wrap">
+    <div class="problem-list">
+      <div class="p"><div class="n">Issue 01</div><h4>Wasted horizontal space</h4><div class="desc">On a 1440px display, roughly 40% of the viewport is given to empty gutters and oversized padding. The feed column itself is narrower than the right rail deserves.</div></div>
+      <div class="p"><div class="n">Issue 02</div><h4>Truncated primary data</h4><div class="desc">The profile card clips the user's own name ("Jen De…") and role ("Product Manager - 0 to 1 - …") on standard laptop widths — a jarring failure for a professional identity product.</div></div>
+      <div class="p"><div class="n">Issue 03</div><h4>Only one post above the fold</h4><div class="desc">At a standard viewport, users see one full post and the top of a second. Scrolling is required before the feed feels like a feed at all.</div></div>
+      <div class="p"><div class="n">Issue 04</div><h4>News rail out of proportion</h4><div class="desc">LinkedIn News uses text sized for a standalone article list, not a companion rail. Five headlines occupy more vertical space than four feed posts.</div></div>
+      <div class="p"><div class="n">Issue 05</div><h4>No density affordance</h4><div class="desc">There's no way to see more at once. Power users — recruiters screening hundreds of profiles — have no density toggle, no keyboard navigation, no scan mode.</div></div>
+      <div class="p"><div class="n">Issue 06</div><h4>Weak visual hierarchy</h4><div class="desc">Every element competes with the same visual weight. The eye has no entry point, so scanning defaults to top-to-bottom, left-to-right — the slowest possible reading pattern.</div></div>
     </div>
+  </div>
+</section>
 
-    <!-- FEED -->
-    <div class="feed">
-      <div class="feed-head">
-        <h1>The <em>Daily</em> Feed</h1>
-        <div class="date">Tue · Apr 14 · 2026</div>
+<!-- ═════════ GOALS ═════════ -->
+<section id="goals">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">02</span> Goals</div>
+    <h2>Four outcomes the redesign had to deliver.</h2>
+    <p>Before touching a pixel, we defined what success looked like. Each goal had to be observable in the final design — not aspirational marketing language.</p>
+  </div>
+  <div class="wrap">
+    <div class="goals">
+      <div class="g">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7 9 18l-5-5"/></svg></div>
+        <h4>Reduce user frustration</h4>
+        <p>Eliminate the truncation, wasted space, and low-density patterns that make the current page feel cluttered and unresponsive.</p>
       </div>
-      <div class="filters">
-        <button class="on">Top</button>
-        <button>Latest</button>
-        <button>Network</button>
-        <button>Following</button>
-        <button>Industry</button>
-        <button>Saved</button>
+      <div class="g">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.2 4.2l4.3 4.3m7 7 4.3 4.3M1 12h6m10 0h6M4.2 19.8l4.3-4.3m7-7 4.3-4.3"/></svg></div>
+        <h4>Make it aesthetically pleasing</h4>
+        <p>Commit to an editorial point of view — serif headlines, confident typography, restrained color — so the product feels considered rather than accidental.</p>
       </div>
-      <div class="composer">
-        <input placeholder="Share an idea, article, or milestone…"/>
-        <div class="tools">
-          <button>Post</button>
-          <button>Article</button>
-          <button>Poll</button>
-          <button>Video</button>
-        </div>
+      <div class="g">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></div>
+        <h4>Serve hiring managers &amp; candidates</h4>
+        <p>Surface the fastest paths to value for each audience — matched roles, engagement signals, and direct action — without burying them behind navigation.</p>
       </div>
-
-      <div class="post">
-        <div class="body">
-          <div class="meta"><span class="name">Leslie Newell</span><span class="role">· Staff Product Manager, Checkr</span><span class="time">23H AGO</span></div>
-          <span class="chip">Career</span>
-          <h2>Nine days in, and Scotty couldn't learn new tricks.</h2>
-          <p>Started the new role with all the usual optimism and a 30-60-90 plan. Here's what the first two weeks taught me about rewiring product instincts built over a decade — and why the familiar playbook failed in the first standup. <a href="#">Read more →</a></p>
-        </div>
-        <div class="react">
-          <div class="count">♥ 22</div>
-          <div class="count">💬 9</div>
-          <div class="count">↗ 3</div>
-        </div>
-      </div>
-
-      <div class="post p2">
-        <div class="body">
-          <div class="meta"><span class="name">Marcus Chen</span><span class="role">· Head of Design, Linear</span><span class="time">4H AGO</span></div>
-          <span class="chip alt">Design</span>
-          <h2>Why our redesign started by deleting 40% of the navigation.</h2>
-          <p>Every nav item is a hypothesis. When we audited usage data from 18 months of telemetry, we discovered that 6 of our 15 primary nav items accounted for 92% of clicks — and the rest were actively making the product feel bloated.</p>
-        </div>
-        <div class="react">
-          <div class="count">♥ 341</div>
-          <div class="count">💬 47</div>
-          <div class="count">↗ 22</div>
-        </div>
-      </div>
-
-      <div class="post p3">
-        <div class="body">
-          <div class="meta"><span class="name">Priya Raghunathan</span><span class="role">· VP Engineering, Stripe</span><span class="time">7H AGO</span></div>
-          <span class="chip">Hiring</span>
-          <h2>We're hiring 12 staff+ engineers across Payments and Atlas.</h2>
-          <p>If you've been waiting for a reason to look again, this is it. Remote-friendly across NA and EU, with a clear IC track through Principal. Feel free to DM me directly — I'll route your info to the right hiring manager within 48 hours.</p>
-        </div>
-        <div class="react">
-          <div class="count">♥ 892</div>
-          <div class="count">💬 134</div>
-          <div class="count">↗ 61</div>
-        </div>
-      </div>
-
-      <div class="post p4">
-        <div class="body">
-          <div class="meta"><span class="name">Dana Okafor</span><span class="role">· Founder, Northwind Robotics</span><span class="time">11H AGO</span></div>
-          <span class="chip alt">Funding</span>
-          <h2>We closed our Series B. Here's the pitch deck that got us there.</h2>
-          <p>Eighteen months ago we had a prototype on my dining room table and a bank account measured in weeks. Today we're announcing $34M to scale warehouse automation across North America.</p>
-        </div>
-        <div class="react">
-          <div class="count">♥ 1.2K</div>
-          <div class="count">💬 203</div>
-          <div class="count">↗ 89</div>
-        </div>
-      </div>
-
-      <div class="post">
-        <div class="body">
-          <div class="meta"><span class="name">Tomás Reyes</span><span class="role">· Investor, Sequoia</span><span class="time">1D AGO</span></div>
-          <span class="chip">Market</span>
-          <h2>Enterprise AI spend forecast revised upward for Q3.</h2>
-          <p>New data from our portfolio suggests enterprise AI budgets are accelerating faster than the most aggressive analyst projections from January. Here's what we're seeing across 140+ companies.</p>
-        </div>
-        <div class="react">
-          <div class="count">♥ 567</div>
-          <div class="count">💬 78</div>
-          <div class="count">↗ 41</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SIDE -->
-    <div class="side">
-      <div class="you">
-        <div class="row1">
-          <h3>Jen Delacroix</h3>
-          <div class="sub">Product Manager · Alaska Airlines</div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="n">157</div><div class="l">Viewers</div></div>
-          <div class="stat"><div class="n">2.4K</div><div class="l">Impressions</div></div>
-          <div class="stat"><div class="n">+18</div><div class="l">This week</div></div>
-        </div>
-      </div>
-
-      <div class="news">
-        <h4>News · Updated 3 min ago</h4>
-        <div class="item"><div class="num">01</div><div><div class="headline">Roblox introduces new account tier for users under 13</div><div class="readers">4H · 3,765 readers</div></div></div>
-        <div class="item"><div class="num">02</div><div><div class="headline">Gas prices rise alongside US oil export surge</div><div class="readers">3H · 2,121 readers</div></div></div>
-        <div class="item"><div class="num">03</div><div><div class="headline">Big banks notch double-digit Q1 revenue jumps</div><div class="readers">3H · 2,032 readers</div></div></div>
-        <div class="item"><div class="num">04</div><div><div class="headline">Dow promotes 30-year veteran Karen Carter to CEO</div><div class="readers">3H · 1,364 readers</div></div></div>
-        <div class="item"><div class="num">05</div><div><div class="headline">Retail sales surprise to the upside in March</div><div class="readers">5H · 1,108 readers</div></div></div>
-      </div>
-
-      <div class="jobs">
-        <h4>Matched roles · 94% fit</h4>
-        <div class="j"><div class="logo">A</div><div><div class="t">Senior PM, Guest Experience</div><div class="c">Alaska Airlines · Seattle</div></div></div>
-        <div class="j"><div class="logo">F</div><div><div class="t">Principal PM, Loyalty</div><div class="c">Figma · Remote</div></div></div>
-        <div class="j"><div class="logo">S</div><div><div class="t">Lead PM, Platform</div><div class="c">Stripe · Denver</div></div></div>
+      <div class="g">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h4>Optimize real estate</h4>
+        <p>Use the full width of the viewport. Every column earns its place by showing content users actually want — not chrome.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- ═════════ BEFORE / AFTER ═════════ -->
+<section id="compare">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">03</span> Before / After</div>
+    <h2>The same task. Roughly half the friction.</h2>
+    <p>Both views show a user's first visit to the LinkedIn home page on a standard 1440px laptop. The difference is how quickly the page earns its real estate — and how much of the product surface is visible at a single glance.</p>
+  </div>
+  <div class="wrap">
+    <div class="compare">
+      <div class="label-row">
+        <div class="lbl before"><span class="tag">Before</span> Current LinkedIn home</div>
+        <div class="lbl after"><span class="tag">After</span> Broadsheet prototype</div>
+      </div>
+      <div class="frames">
+        <div class="frame"><img src="linkedin-before.png" alt="Current LinkedIn home page showing truncated profile, empty gutters, and a single post above the fold."/></div>
+        <div class="frame"><svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;background:#fff;"><rect width="1440" height="52" fill="#f4f2ee"/><rect x="0" y="51" width="1440" height="1" fill="#e0dfdc"/><text x="28" y="34" font-family="Roboto,sans-serif" font-size="22" font-weight="700" fill="#0a66c2">in</text><line x1="56" y1="0" x2="56" y2="52" stroke="#e0dfdc"/><circle cx="78" cy="26" r="6" fill="none" stroke="#999" stroke-width="2"/><line x1="82" y1="30" x2="86" y2="34" stroke="#999" stroke-width="2"/><text x="100" y="30" font-family="Arial,sans-serif" font-size="13" fill="#8a8a8a">Search people, posts, companies, jobs…</text><rect x="940" y="14" width="34" height="22" rx="3" fill="#fff" stroke="#e0dfdc"/><text x="957" y="29" text-anchor="middle" font-family="monospace" font-size="11" fill="#666">⌘K</text><text x="1010" y="32" font-family="monospace" font-size="11" fill="#0a66c2" font-weight="500">●</text><text x="1024" y="32" font-family="monospace" font-size="10" fill="#666" letter-spacing="1.2">FEED</text><text x="1080" y="32" font-family="monospace" font-size="10" fill="#666" letter-spacing="1.2">NETWORK</text><text x="1160" y="32" font-family="monospace" font-size="10" fill="#666" letter-spacing="1.2">JOBS</text><text x="1210" y="32" font-family="monospace" font-size="10" fill="#666" letter-spacing="1.2">LEARNING</text><circle cx="1320" cy="26" r="9" fill="none" stroke="#666"/><circle cx="1352" cy="26" r="9" fill="none" stroke="#666"/><rect x="1372" y="14" width="32" height="22" rx="4" fill="#fff" stroke="#e0dfdc"/><text x="1388" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="600">JD</text><rect x="0" y="52" width="56" height="848" fill="#f4f2ee"/><rect x="55" y="52" width="1" height="848" fill="#e0dfdc"/><rect x="12" y="68" width="32" height="32" rx="6" fill="#eaf4fc"/><rect x="12" y="68" width="2" height="32" fill="#0a66c2"/><rect x="12" y="108" width="32" height="32" rx="6" fill="none"/><rect x="12" y="148" width="32" height="32" rx="6" fill="none"/><rect x="12" y="188" width="32" height="32" rx="6" fill="none"/><rect x="12" y="228" width="32" height="32" rx="6" fill="none"/><rect x="56" y="52" width="704" height="848" fill="#fff"/><text x="96" y="115" font-family="Roboto,sans-serif" font-size="36" font-weight="500" fill="#000">The </text><text x="180" y="115" font-family="Roboto,sans-serif" font-size="36" font-weight="500" fill="#0a66c2">Daily</text><text x="270" y="115" font-family="Roboto,sans-serif" font-size="36" font-weight="500" fill="#000"> Feed</text><text x="720" y="115" font-family="monospace" font-size="11" fill="#666" letter-spacing="1.2">TUE · APR 14 · 2026</text><line x1="56" y1="135" x2="760" y2="135" stroke="#e0dfdc"/><rect x="96" y="148" width="40" height="22" rx="3" fill="#0a66c2"/><text x="116" y="163" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff" letter-spacing="1">TOP</text><text x="156" y="163" font-family="monospace" font-size="10" fill="#666" letter-spacing="1">LATEST</text><text x="218" y="163" font-family="monospace" font-size="10" fill="#666" letter-spacing="1">NETWORK</text><text x="298" y="163" font-family="monospace" font-size="10" fill="#666" letter-spacing="1">FOLLOWING</text><text x="392" y="163" font-family="monospace" font-size="10" fill="#666" letter-spacing="1">INDUSTRY</text><line x1="56" y1="184" x2="760" y2="184" stroke="#e0dfdc"/><text x="96" y="212" font-family="Arial,sans-serif" font-size="14" fill="#666">Share an idea, article, or milestone…</text><rect x="540" y="200" width="44" height="22" rx="4" fill="none" stroke="#e0dfdc"/><text x="562" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">POST</text><rect x="592" y="200" width="56" height="22" rx="4" fill="none" stroke="#e0dfdc"/><text x="620" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">ARTICLE</text><rect x="656" y="200" width="42" height="22" rx="4" fill="none" stroke="#e0dfdc"/><text x="677" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">POLL</text><rect x="706" y="200" width="48" height="22" rx="4" fill="none" stroke="#e0dfdc"/><text x="730" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">VIDEO</text><line x1="56" y1="240" x2="760" y2="240" stroke="#e0dfdc"/><text x="96" y="268" font-family="Arial,sans-serif" font-size="11" font-weight="600">Leslie Newell</text><text x="180" y="268" font-family="Arial,sans-serif" font-size="11" fill="#666">· Staff PM, Checkr</text><text x="700" y="268" font-family="monospace" font-size="9" fill="#8a8a8a" letter-spacing="0.8">23H AGO</text><rect x="96" y="278" width="48" height="14" rx="2" fill="#eaf4fc" stroke="#0a66c244"/><text x="120" y="288" text-anchor="middle" font-family="monospace" font-size="8" fill="#0a66c2" letter-spacing="1">CAREER</text><text x="96" y="312" font-family="Roboto,sans-serif" font-size="17" fill="#000" font-weight="500">Nine days in, and Scotty couldn't learn new tricks.</text><text x="96" y="332" font-family="Arial,sans-serif" font-size="12" fill="#333">Started the new role with a 30-60-90 plan. Here's what the first two weeks taught</text><text x="96" y="348" font-family="Arial,sans-serif" font-size="12" fill="#333">me about rewiring product instincts built over a decade.</text><text x="700" y="312" text-anchor="end" font-family="monospace" font-size="10" fill="#666">♥ 22</text><text x="700" y="328" text-anchor="end" font-family="monospace" font-size="10" fill="#666">9 comments</text><text x="700" y="344" text-anchor="end" font-family="monospace" font-size="10" fill="#666">3 reposts</text><line x1="56" y1="380" x2="760" y2="380" stroke="#e0dfdc"/><text x="96" y="408" font-family="Arial,sans-serif" font-size="11" font-weight="600">Marcus Chen</text><text x="172" y="408" font-family="Arial,sans-serif" font-size="11" fill="#666">· Head of Design, Linear</text><text x="700" y="408" font-family="monospace" font-size="9" fill="#8a8a8a" letter-spacing="0.8">4H AGO</text><rect x="96" y="418" width="44" height="14" rx="2" fill="#e8f5ed" stroke="#05764244"/><text x="118" y="428" text-anchor="middle" font-family="monospace" font-size="8" fill="#057642" letter-spacing="1">DESIGN</text><text x="96" y="452" font-family="Roboto,sans-serif" font-size="17" fill="#000" font-weight="500">We deleted 40% of our navigation. Usage went up.</text><text x="96" y="472" font-family="Arial,sans-serif" font-size="12" fill="#333">Every nav item is a hypothesis. 6 of 15 primary items accounted for 92% of clicks.</text><text x="700" y="452" text-anchor="end" font-family="monospace" font-size="10" fill="#666">♥ 341</text><line x1="56" y1="500" x2="760" y2="500" stroke="#e0dfdc"/><text x="96" y="528" font-family="Arial,sans-serif" font-size="11" font-weight="600">Priya Raghunathan</text><text x="208" y="528" font-family="Arial,sans-serif" font-size="11" fill="#666">· VP Engineering, Stripe</text><text x="700" y="528" font-family="monospace" font-size="9" fill="#8a8a8a" letter-spacing="0.8">7H AGO</text><rect x="96" y="538" width="44" height="14" rx="2" fill="#eaf4fc" stroke="#0a66c244"/><text x="118" y="548" text-anchor="middle" font-family="monospace" font-size="8" fill="#0a66c2" letter-spacing="1">HIRING</text><text x="96" y="572" font-family="Roboto,sans-serif" font-size="17" fill="#000" font-weight="500">We're hiring 12 staff+ engineers across Payments and Atlas.</text><text x="700" y="572" text-anchor="end" font-family="monospace" font-size="10" fill="#666">♥ 892</text><line x1="56" y1="610" x2="760" y2="610" stroke="#e0dfdc"/><text x="96" y="638" font-family="Arial,sans-serif" font-size="11" font-weight="600">Dana Okafor</text><text x="170" y="638" font-family="Arial,sans-serif" font-size="11" fill="#666">· Founder, Northwind Robotics</text><text x="700" y="638" font-family="monospace" font-size="9" fill="#8a8a8a" letter-spacing="0.8">11H AGO</text><rect x="96" y="648" width="48" height="14" rx="2" fill="#e8f5ed" stroke="#05764244"/><text x="120" y="658" text-anchor="middle" font-family="monospace" font-size="8" fill="#057642" letter-spacing="1">FUNDING</text><text x="96" y="682" font-family="Roboto,sans-serif" font-size="17" fill="#000" font-weight="500">We closed our Series B. Here's the pitch deck.</text><text x="700" y="682" text-anchor="end" font-family="monospace" font-size="10" fill="#666">♥ 1.2K</text><line x1="56" y1="720" x2="760" y2="720" stroke="#e0dfdc"/><text x="96" y="748" font-family="Arial,sans-serif" font-size="11" font-weight="600">Tomás Reyes</text><text x="172" y="748" font-family="Arial,sans-serif" font-size="11" fill="#666">· Investor, Sequoia</text><text x="96" y="785" font-family="Roboto,sans-serif" font-size="17" fill="#000" font-weight="500">Enterprise AI spend forecast revised upward.</text><rect x="760" y="52" width="680" height="848" fill="#f4f2ee"/><rect x="760" y="51" width="1" height="848" fill="#e0dfdc"/><text x="784" y="98" font-family="Roboto,sans-serif" font-size="17" font-weight="500" fill="#000">Jen Delacroix</text><text x="784" y="116" font-family="Arial,sans-serif" font-size="11" fill="#666">Product Manager · Alaska Airlines</text><rect x="784" y="132" width="180" height="56" rx="6" fill="#fff" stroke="#e0dfdc"/><text x="794" y="158" font-family="Roboto,sans-serif" font-size="20" fill="#0a66c2" font-weight="500">157</text><text x="794" y="178" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">VIEWERS</text><rect x="970" y="132" width="180" height="56" rx="6" fill="#fff" stroke="#e0dfdc"/><text x="980" y="158" font-family="Roboto,sans-serif" font-size="20" fill="#0a66c2" font-weight="500">2.4K</text><text x="980" y="178" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">IMPRESSIONS</text><rect x="1156" y="132" width="180" height="56" rx="6" fill="#fff" stroke="#e0dfdc"/><text x="1166" y="158" font-family="Roboto,sans-serif" font-size="20" fill="#0a66c2" font-weight="500">+18</text><text x="1166" y="178" font-family="monospace" font-size="9" fill="#666" letter-spacing="0.8">THIS WEEK</text><line x1="784" y1="208" x2="1416" y2="208" stroke="#e0dfdc"/><text x="784" y="232" font-family="monospace" font-size="9" fill="#666" letter-spacing="1.2">NEWS · UPDATED 3 MIN AGO</text><text x="784" y="262" font-family="monospace" font-size="10" fill="#8a8a8a">01</text><text x="816" y="262" font-family="Roboto,sans-serif" font-size="13" fill="#000" font-weight="500">Roblox introduces new account tier for under-13s</text><text x="816" y="278" font-family="monospace" font-size="9" fill="#8a8a8a">4H · 3,765 READERS</text><text x="784" y="306" font-family="monospace" font-size="10" fill="#8a8a8a">02</text><text x="816" y="306" font-family="Roboto,sans-serif" font-size="13" fill="#000" font-weight="500">Gas prices rise alongside US oil export surge</text><text x="816" y="322" font-family="monospace" font-size="9" fill="#8a8a8a">3H · 2,121 READERS</text><text x="784" y="350" font-family="monospace" font-size="10" fill="#8a8a8a">03</text><text x="816" y="350" font-family="Roboto,sans-serif" font-size="13" fill="#000" font-weight="500">Big banks notch double-digit Q1 revenue jumps</text><text x="816" y="366" font-family="monospace" font-size="9" fill="#8a8a8a">3H · 2,032 READERS</text><text x="784" y="394" font-family="monospace" font-size="10" fill="#8a8a8a">04</text><text x="816" y="394" font-family="Roboto,sans-serif" font-size="13" fill="#000" font-weight="500">Dow promotes 30-year veteran Karen Carter to CEO</text><text x="816" y="410" font-family="monospace" font-size="9" fill="#8a8a8a">3H · 1,364 READERS</text><line x1="784" y1="442" x2="1416" y2="442" stroke="#e0dfdc"/><text x="784" y="468" font-family="monospace" font-size="9" fill="#666" letter-spacing="1.2">MATCHED ROLES · 94% FIT</text><rect x="784" y="486" width="28" height="28" rx="5" fill="#fff" stroke="#e0dfdc"/><text x="798" y="505" text-anchor="middle" font-family="Roboto,sans-serif" font-size="12" font-weight="700" fill="#0a66c2">A</text><text x="824" y="500" font-family="Arial,sans-serif" font-size="12" fill="#000" font-weight="500">Senior PM, Guest Experience</text><text x="824" y="514" font-family="Arial,sans-serif" font-size="10" fill="#666">Alaska Airlines · Seattle</text><rect x="784" y="528" width="28" height="28" rx="5" fill="#fff" stroke="#e0dfdc"/><text x="798" y="547" text-anchor="middle" font-family="Roboto,sans-serif" font-size="12" font-weight="700" fill="#0a66c2">F</text><text x="824" y="542" font-family="Arial,sans-serif" font-size="12" fill="#000" font-weight="500">Principal PM, Loyalty</text><text x="824" y="556" font-family="Arial,sans-serif" font-size="10" fill="#666">Figma · Remote</text><rect x="784" y="570" width="28" height="28" rx="5" fill="#fff" stroke="#e0dfdc"/><text x="798" y="589" text-anchor="middle" font-family="Roboto,sans-serif" font-size="12" font-weight="700" fill="#0a66c2">S</text><text x="824" y="584" font-family="Arial,sans-serif" font-size="12" fill="#000" font-weight="500">Lead PM, Platform</text><text x="824" y="598" font-family="Arial,sans-serif" font-size="10" fill="#666">Stripe · Denver</text></svg></div>
+      </div>
+      <div class="caption-row">
+        <div class="cap">One post above the fold. Profile name truncated. Roughly 40% of the horizontal space is empty gutter. News headlines overwhelm the feed.</div>
+        <div class="cap">Four to five posts above the fold. Full name and role visible. A 56px icon rail replaces the profile card. News becomes a scannable numbered index. Zero wasted width.</div>
+      </div>
+      <div class="launch">
+        <a href="broadsheet.html" target="_blank">Open full prototype ↗</a>
+        <span class="hint">Opens in a new tab · Best viewed at 1280px+</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ DECISIONS ═════════ -->
+<section id="decisions">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">04</span> Key Decisions</div>
+    <h2>Six design moves that did most of the work.</h2>
+    <p>Every design decision was made in service of one of the four goals above. Here are the six changes that delivered the biggest measurable improvement in density, legibility, and speed.</p>
+  </div>
+  <div class="wrap">
+    <div class="decisions">
+      <div class="d">
+        <div class="n">01</div>
+        <div>
+          <h3>Replace the profile card with an icon rail</h3>
+          <p>The left column gets a 56px vertical icon rail for primary navigation. Profile information moves to the right rail where it earns its keep with actual engagement stats.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>240px profile card with truncated name</div>
+          <div class="col a"><div class="t">After</div>56px icon rail — 184px reclaimed for feed</div>
+        </div>
+      </div>
+      <div class="d">
+        <div class="n">02</div>
+        <div>
+          <h3>Masthead with a command-K search</h3>
+          <p>The oversized search field collapses into a full-width ⌘K command bar with top-level category pins (Feed, Network, Jobs, Learning) visible at all times.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>Pill search + icon cluster</div>
+          <div class="col a"><div class="t">After</div>Command bar + persistent nav chips</div>
+        </div>
+      </div>
+      <div class="d">
+        <div class="n">03</div>
+        <div>
+          <h3>Editorial feed with serif headlines</h3>
+          <p>Posts render as proper editorial cards with a clear Roboto headline, muted body text, category chip, and right-aligned engagement counts. The eye has a clear entry point on every row.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>Uniform sans text, ~1.5 posts above fold</div>
+          <div class="col a"><div class="t">After</div>Serif headlines, 4–5 posts above fold</div>
+        </div>
+      </div>
+      <div class="d">
+        <div class="n">04</div>
+        <div>
+          <h3>Condense LinkedIn News into a numbered index</h3>
+          <p>News headlines become a ranked 01–05 list with smaller type, muted reader counts, and a hover state that previews the article. The whole rail takes a third of its former height.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>5 items filling the right column</div>
+          <div class="col a"><div class="t">After</div>5 items in ~35% of the space</div>
+        </div>
+      </div>
+      <div class="d">
+        <div class="n">05</div>
+        <div>
+          <h3>Surface matched jobs for every user</h3>
+          <p>A "Matched Roles · 94% fit" block sits in the right rail on every visit. Candidates always see the top three roles that match their profile. Hiring managers get a parallel block showing profiles that match their open reqs.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>Jobs hidden behind nav</div>
+          <div class="col a"><div class="t">After</div>Always-on matched roles panel</div>
+        </div>
+      </div>
+      <div class="d">
+        <div class="n">06</div>
+        <div>
+          <h3>LinkedIn palette, editorial voice</h3>
+          <p>The redesign uses LinkedIn's actual color tokens — #0a66c2 blue, #f4f2ee warm off-white, #057642 hiring green — so it reads as something LinkedIn could ship tomorrow, not a fork into a different brand.</p>
+        </div>
+        <div class="before-after">
+          <div class="col b"><div class="t">Before</div>Current LinkedIn colors, modern layout</div>
+          <div class="col a"><div class="t">After</div>Same palette, editorial typography</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ PERSONAS ═════════ -->
+<section id="personas">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">05</span> Who It Serves</div>
+    <h2>Two audiences, one home page.</h2>
+    <p>LinkedIn's home page has to do two jobs well. Hiring managers need signal. Candidates need visibility. Broadsheet gives each audience a dedicated surface without fragmenting the product.</p>
+  </div>
+  <div class="wrap">
+    <div class="personas">
+      <div class="pa hm">
+        <div class="role">Persona A</div>
+        <h3>Hiring Managers &amp; Recruiters</h3>
+        <p class="desc">Scan-oriented users who open LinkedIn 8–15 times per day looking for signal — new candidates, updated profiles, responses to outreach. They need density and keyboard-level speed.</p>
+        <ul>
+          <li>Four to five posts visible above the fold for faster signal scanning</li>
+          <li>Command bar with ⌘K for instant profile, company, and post search</li>
+          <li>Category filters (Top, Latest, Network, Industry) at the top of the feed</li>
+          <li>Engagement counts right-aligned for at-a-glance impact assessment</li>
+          <li>Matched candidate block always visible in the right rail</li>
+        </ul>
+      </div>
+      <div class="pa cd">
+        <div class="role">Persona B</div>
+        <h3>Active &amp; Passive Candidates</h3>
+        <p class="desc">Professionals tracking their industry, sharing work, and watching for opportunities. They need visibility into their own reach and frictionless access to matched roles.</p>
+        <ul>
+          <li>Profile engagement stats (157 viewers, 2.4K impressions) surfaced in the rail</li>
+          <li>Matched roles panel with fit percentage always visible</li>
+          <li>Compose bar with one-click Post / Article / Poll / Video</li>
+          <li>Category chips on every post for industry-filtered browsing</li>
+          <li>News as a scannable index, not a competing column</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ METRICS (near bottom) ═════════ -->
+<section id="metrics" class="metrics">
+  <div class="wrap-narrow">
+    <div class="section-label"><span class="num">06</span> Vanity Metrics</div>
+    <h2>Numbers that look good in a portfolio.</h2>
+    <p class="disclaimer">Note: these are illustrative projections from the design work, not measured outcomes from a shipped product. They represent what this redesign would plausibly deliver against the current baseline — included here for completeness, but the case for Broadsheet rests on the qualitative improvements above, not these figures.</p>
+  </div>
+  <div class="wrap">
+    <div class="metrics-grid">
+      <div class="m">
+        <div class="label">Above-fold density</div>
+        <div class="big">4.2<span class="unit">×</span></div>
+        <div class="cap">Posts visible above the fold on a 1440px laptop, vs. 1.5 in the current design.</div>
+      </div>
+      <div class="m">
+        <div class="label">Horizontal space recovered</div>
+        <div class="big">+38<span class="unit">%</span></div>
+        <div class="cap">Of viewport width now serves content, recovered from former gutters and oversized chrome.</div>
+      </div>
+      <div class="m">
+        <div class="label">Time to first action</div>
+        <div class="big">−52<span class="unit">%</span></div>
+        <div class="cap">Estimated reduction in time to reach compose, search, or matched jobs from page load.</div>
+      </div>
+      <div class="m">
+        <div class="label">Fewer clicks to key tasks</div>
+        <div class="big">3<span class="unit">→1</span></div>
+        <div class="cap">Matched roles and engagement stats are now always-on — no nav traversal required.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ FOOTER ═════════ -->
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div class="copy">© 2026 · LinkedIn UI Case Study · Concept work</div>
+      <div class="links">
+        <a href="broadsheet.html" target="_blank">Live Prototype</a>
+        <a href="#problem">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
